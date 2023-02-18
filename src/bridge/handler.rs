@@ -68,8 +68,14 @@ impl Handler for NeovimHandler {
         match event_name.as_ref() {
             "redraw" => {
                 for events in arguments {
-                    let parsed_events = parse_redraw_event(events)
-                        .unwrap_or_explained_panic("Could not parse event from neovim");
+                    let cloned = events.clone();
+                    let Ok(parsed_events) = parse_redraw_event(events) else {
+                        let mut last = Vec::new();
+                        rmpv::encode::write_value_ref(&mut last, &cloned.as_ref()).expect("write_value_ref");
+                        let last: serde_json::Value = rmp_serde::from_slice(&last).expect("from_slice");
+                        let last = serde_json::to_string_pretty(&last).expect("to_string_pretty");
+                        panic!("Could not parse event from neovim {}", last);
+                    };
 
                     for parsed_event in parsed_events {
                         EVENT_AGGREGATOR.send(EditorCommand::NeovimRedrawEvent(parsed_event));
