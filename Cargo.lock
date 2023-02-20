@@ -1399,6 +1399,7 @@ dependencies = [
  "rand 0.8.5",
  "rmp-serde",
  "rmpv",
+ "ron",
  "serde",
  "serde_json",
  "shlex",
@@ -2089,6 +2090,17 @@ checksum = "de8813b3a2f95c5138fe5925bfb8784175d88d6bff059ba8ce090aa891319754"
 dependencies = [
  "num-traits",
  "rmp",
+]
+
+[[package]]
+name = "ron"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "300a51053b1cb55c80b7a9fde4120726ddf25ca241a1cbb926626f62fb136bff"
+dependencies = [
+ "base64",
+ "bitflags",
+ "serde",
 ]
 
 [[package]]
